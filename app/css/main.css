@@ -65,6 +65,8 @@ body {
 .done {
   background: #64e464;
   color: black; }
+  .done input {
+    background: #64e464; }
 
 .input-area {
   padding-bottom: 15px;
@@ -122,12 +124,8 @@ body {
   margin-bottom: 20px;
   border: 2px solid black;
   transition: all 0.5s ease; }
-  .output p {
-    float: left;
-    margin: 0;
-    padding: 0;
-    display: inline-block;
-    margin-right: 10px; }
+  .output input {
+    transition: background 0.5s ease; }
   .output .button-delete,
   .output .button-done,
   .output .button-finally-delete,
@@ -166,6 +164,7 @@ body {
   margin: 0;
   height: 0;
   border: none; }
+  .hide-task input,
   .hide-task .button-delete,
   .hide-task .button-done,
   .hide-task .button-finally-delete,
@@ -192,6 +191,8 @@ body {
   .deleted .button-finally-delete,
   .deleted .button-return {
     display: inline-block; }
+  .deleted input {
+    background: red; }
 
 .display-for-buttons-none {
   display: none; }
@@ -227,6 +228,14 @@ ul {
     overflow: hidden;
     content: '';
     display: inline-block; }
+
+.out-label {
+  position: relative;
+  width: 90%; }
+
+.output input {
+  border: none;
+  width: 100%; }
 
 /*==========  Desktop First Method  ==========*/
 /* Large Devices, Wide Screens */

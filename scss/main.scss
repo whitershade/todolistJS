@@ -48,6 +48,9 @@ body {
 .done {
   background: green + 100;
   color: black;
+  input {
+    background: green + 100;
+  }
 }
 
 .input-area {
@@ -122,12 +125,8 @@ body {
   margin-bottom: 20px;
   border: 2px solid black;
   transition: all .5s ease;
-  p {
-    float: left;
-    margin: 0;
-    padding: 0;
-    display: inline-block;
-    margin-right: 10px;
+  input {
+    transition: background .5s ease;
   }
   .button-delete,
   .button-done,
@@ -171,6 +170,7 @@ body {
   margin: 0;
   height: 0;
   border: none;
+  input,
   .button-delete,
   .button-done,
   .button-finally-delete,
@@ -201,6 +201,9 @@ body {
   .button-finally-delete,
   .button-return {
     display: inline-block;
+  }
+  input {
+    background: red;
   }
 }
 
@@ -244,6 +247,16 @@ ul {
     content: '';
     display: inline-block;
   }
+}
+
+.out-label {
+  position: relative;
+  width: 90%;
+}
+
+.output input {
+  border: none;
+  width: 100%;
 }
 
 //ALWAYS END
