@@ -1,0 +1,250 @@
+@import "header";
+//Custom Styles Here
+body {
+  margin: 0;
+  font-size: 16px;
+  color: #000;
+  font-family: "Roboto", $helvetica;
+  overflow-x: hidden;
+}
+
+.main-header {
+  p {
+    margin: 0;
+    font-weight: bold;
+  }
+  .left-side,
+  .right-side {
+    text-transform: uppercase;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border: 3px solid #000;
+  }
+  .left-side {
+    margin-right: -15px;
+    background: #000;
+    color: #FFF;
+    p {
+      font-size: em(55px);
+      line-height: 60px;
+    }
+  }
+  .right-side {
+    margin-left: -15px;
+    p {
+      font-size: em(80px);
+      line-height: 120px;
+    }
+  }
+  .date-text {
+    font-size: em(30px);
+    margin-bottom: 20px;
+  }
+}
+
+.done {
+  background: green + 100;
+  color: black;
+}
+
+.input-area {
+  padding-bottom: 15px;
+  border-bottom: 2px solid green;
+  input[name="what-to-do"] {
+    width: 90%;
+    border: 2px solid #000;
+    padding: 15px;
+    height: 50px;
+  }
+}
+
+.add-to-do,
+.hide-if-done,
+.show-deleted,
+.hide-deleted {
+  display: inline-block;
+  svg {
+    width: 50px;
+    height: 50px;
+  }
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.add-to-do {
+  svg {
+    transition: all .3s ease;
+  }
+  &:hover {
+    svg {
+      fill: green;
+    }
+  }
+}
+
+.hide-if-done {
+  svg {
+    transition: all .2s ease;
+    fill: green;
+    transform: translateY(1px) scale(1.2);
+  }
+}
+
+.hide-if-done-button-red {
+  svg {
+    fill: red;
+  }
+}
+
+.show-deleted {
+  svg {
+    fill: red - 50;
+  }
+}
+
+.hide-deleted {
+  display: none;
+  svg {
+    fill: green;
+  }
+}
+
+.output-area {
+  padding-top: 20px;
+}
+
+.output {
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 2px solid black;
+  transition: all .5s ease;
+  p {
+    float: left;
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+    margin-right: 10px;
+  }
+  .button-delete,
+  .button-done,
+  .button-finally-delete,
+  .button-return {
+    margin-top: 10px;
+    font-size: 20px;
+    line-height: 20px;
+    text-align: center;
+    float: right;
+    width: 25px;
+    height: 25px;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  .button-delete {
+    margin-right: 10px;
+    color: red;
+    color: tomato;
+    border: 2px solid red;
+  }
+  .button-finally-delete,
+  .button-return {
+    color: white;
+    border: 2px solid white;
+  }
+  .button-return {
+    margin-right: 10px;
+    font-weight: bold;
+  }
+  .button-done {
+    border: 2px solid green;
+    color: green;
+  }
+}
+
+.hide-task {
+  font-size: 0;
+  padding: 0;
+  margin: 0;
+  height: 0;
+  border: none;
+  .button-delete,
+  .button-done,
+  .button-finally-delete,
+  .button-return {
+    margin: 0;
+    height: 0;
+    padding: 0;
+    opacity: 0;
+    padding: 0;
+    border: none;
+    display: none;
+  }
+}
+
+.button-finally-delete,
+.button-return {
+  display: none;
+  float: right;
+}
+
+.deleted {
+  background: red;
+  color: #FFF;
+  .button-delete,
+  .button-done {
+    display: none;
+  }
+  .button-finally-delete,
+  .button-return {
+    display: inline-block;
+  }
+}
+
+.display-for-buttons-none {
+  display: none;
+}
+
+.display-for-buttons-inline {
+  display: inline-block;
+}
+
+ul {
+  padding: 0;
+  text-align: justify;
+  /* Обнуляем для родителя*/
+  line-height: 0;
+  font-size: 1px;
+  /* 1px для Opera */
+  /* Лекарство для IE6-7*/
+  text-justify: newspaper;
+  zoom: 1;
+  /* Включаем в работу последнюю строку*/
+  text-align-last: justify;
+  li {
+    display: inline-block;
+    text-align: left;
+    /* Востанавливаем у потомков, кроме последнего*/
+    line-height: normal;
+    font-size: 14px;
+    /* Без него в Opera будет отступ под элементами */
+    vertical-align: top;
+    /* эмуляция inline-block для IE6-7*/
+    //display : inline;
+    //zoom : 1;
+  }
+  &:after {
+    width: 100%;
+    height: 0px;
+    visibility: hidden;
+    overflow: hidden;
+    content: '';
+    display: inline-block;
+  }
+}
+
+//ALWAYS END
+@import "media";
