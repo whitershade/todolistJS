@@ -42,6 +42,9 @@
     },
     addEventListeners: function () {
       addToDo.addEventListener('click', function () {
+        if (whatToDo.value === '') {
+          whatToDo.value = "&nbsp;";
+        }
         outputArea.innerHTML += App.getCurrentTask(whatToDo.value, true);
         whatToDo.value = ''; // обнуляем введеное в поле
         App.refreshLocalStorage();
@@ -95,9 +98,20 @@
         App.refreshLocalStorage(); // обновляем информацию в Local Storage
       }); // что происходит при нажати ина кнопку 'выйти из коризны' (стрелка)
       outputArea.addEventListener('click', function (e) {
-        if (e.target.classList.contains('out-input')) {
-          e.target.onchange = function () {
-            util.closeset(e.target, 'output').innerHTML = App.getCurrentTask(this.value);
+        if (e.target.classList.contains('out-span')) {
+          let span = e.target;
+          let input = e.target.previousSibling;
+          input.classList.remove('hide');
+          span.classList.add('hide');
+          input.focus();
+          input.selectionStart = input.value.length;
+          input.onblur = function () {
+            input.classList.add('hide');
+            span.classList.remove('hide');
+            if (input.value === '') {
+              input.value = '&nbsp;';
+            }
+            util.closeset(span, 'output').innerHTML = App.getCurrentTask(input.value);
             App.refreshLocalStorage();
           };
         }
@@ -136,7 +150,7 @@
       hideDeleted.classList.toggle('display-for-buttons-inline');
     }, // функция, которая скрывает/показывает лишние/нужные элементы при переходе/выходе из корзины
     getCurrentTask: function (task, full) {
-      const newTask = `<label class="out-label"><input type="text" class="out-input" value="${task}"></label>
+      const newTask = `<label class="out-label"><input type="text" class="out-input hide" value="${task}"><span class="out-span">${task}</span></label>
                <div class="button-done">&#10004;</div><div class="button-delete">&#10006;</div>
                <div class="button-finally-delete">&#10006;</div><div class="button-return">&#8634;</div>`;
       if (full) {

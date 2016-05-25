@@ -48,6 +48,9 @@ body {
 .done {
   background: green + 100;
   color: black;
+  span {
+    text-decoration: line-through;
+  }
   input {
     background: green + 100;
   }
@@ -125,8 +128,23 @@ body {
   margin-bottom: 20px;
   border: 2px solid black;
   transition: all .5s ease;
+  label {
+    margin-top: 10px;
+  }
   input {
+    padding: 5px;
     transition: background .5s ease;
+    &.hide {
+      display: none;
+    }
+  }
+  span {
+    padding: 5px;
+    display: block;
+    word-wrap: break-word;
+    &.hide {
+      display: none;
+    }
   }
   .button-delete,
   .button-done,

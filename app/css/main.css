@@ -65,6 +65,8 @@ body {
 .done {
   background: #64e464;
   color: black; }
+  .done span {
+    text-decoration: line-through; }
   .done input {
     background: #64e464; }
 
@@ -124,8 +126,19 @@ body {
   margin-bottom: 20px;
   border: 2px solid black;
   transition: all 0.5s ease; }
+  .output label {
+    margin-top: 10px; }
   .output input {
+    padding: 5px;
     transition: background 0.5s ease; }
+    .output input.hide {
+      display: none; }
+  .output span {
+    padding: 5px;
+    display: block;
+    word-wrap: break-word; }
+    .output span.hide {
+      display: none; }
   .output .button-delete,
   .output .button-done,
   .output .button-finally-delete,
@@ -261,7 +274,10 @@ ul {
     -moz-animation: none !important;
     -o-animation: none !important;
     -ms-animation: none !important;
-    animation: none !important; } }
+    animation: none !important; }
+  .output input,
+  .output label {
+    width: 80%; } }
 
 /* Extra Small Devices, Phones */
 @media only screen and (max-width: 480px) {
@@ -292,7 +308,11 @@ ul {
     .input-area .show-deleted svg,
     .input-area .hide-deleted svg {
       width: 35px;
-      height: 35px; } }
+      height: 35px; }
+  .output label {
+    width: 70%; }
+  .output input {
+    width: 100%; } }
 
 /* Custom, iPhone Retina */
 /*==========  Mobile First Method  ==========*/
