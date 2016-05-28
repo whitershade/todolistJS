@@ -81,6 +81,10 @@ body {
   }
 }
 
+#hide-deleted {
+  display: none;
+}
+
 .add-to-do {
   svg {
     transition: all .3s ease;
@@ -120,7 +124,11 @@ body {
 }
 
 .output-area {
-  padding-top: 20px;
+  margin-top: 20px;
+  padding: 0;
+  li {
+    display: block;
+  }
 }
 
 .output {
@@ -226,14 +234,14 @@ body {
 }
 
 .display-for-buttons-none {
-  display: none;
+  display: none !important;
 }
 
 .display-for-buttons-inline {
-  display: inline-block;
+  display: inline-block !important;
 }
 
-ul {
+.icon-buttons {
   padding: 0;
   text-align: justify;
   /* Обнуляем для родителя*/

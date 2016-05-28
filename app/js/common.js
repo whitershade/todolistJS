@@ -3,144 +3,226 @@
 
 (function () {
   'use strict';
-  const activeArea = document.getElementById('active-area');
-  let outputArea;
-  let whatToDo;
-  let addToDo;
-  let hideIfDone;
+  const outputArea = document.getElementById('output-area');
+  const whatToDo = document.getElementById('what-to-do');
+  const addToDo = document.getElementById('add-to-do');
+  const hideIfDone = document.getElementById('hide-if-done');
+  const showDeleted = document.getElementById('show-deleted');
+  const hideDeleted = document.getElementById('hide-deleted');
+
   let hideToggle;
-  let showDeleted;
-  let hideDeleted;
+  let inBasket;
 
   const util = {
     getDate: function () {
       var d = new Date(); // получаем текущую дату
       return `${d.getDate()}.${(d.getMonth() + 1)}.${d.getFullYear()}`; // возвращаем день, месяц и год в форате 0.0.0000
     }, // функция, которая возвращает текущую дату в формате 0.0.0000
-    closeset: function (el, cl) {
-        let elem = el; // сохраняем переданный в функцию элемент
-        while (elem.className.replace(/[\n\t]/g, ' ').indexOf(cl) === -1) { // пока у элеменат нет искомого имени класса ищем родителяif (elem.tagName.toLowerCase() == 'html') return false; // если дошли до конца документа, и не нашли подходящего родителя, то возращаем false
-          elem = elem.parentNode;
+    closest: function (el, cl) {
+      let elem = el; // сохраняем переданный в функцию элемент
+      while (elem.className.replace(/[\n\t]/g, ' ').indexOf(cl) === -1) { // пока у элеменат нет искомого имени класса ищем родителя 
+        if (elem.tagName.toLowerCase() == 'html') {
+          return false;
+        } // если дошли до конца документа, и не нашли подходящего родителя, то возращаем false
+        elem = elem.parentNode;
+      }
+      return elem; // возвращаем найденный элемент
+    }, // функция, которая находит близжайшего родителя элемента с указанным классом
+    uuid: function () {
+      /*jshint bitwise:false */
+      var i, random;
+      var uuid = '';
+      for (i = 0; i < 32; i++) {
+        random = Math.random() * 16 | 0;
+        if (i === 8 || i === 12 || i === 16 || i === 20) {
+          uuid += '-';
         }
-        return elem; // возвращаем найденный элемент
-      } // функция, которая находит близжайшего родителя элемента с указанным классом
+        uuid += (i === 12 ? 4 : (i === 16 ? (random & 3 | 8) : random)).toString(16);
+      }
+      return uuid;
+    }
   };
-  const App = {
+  let taskArray = [];
+  const app = {
     init: function () {
-      App.loadLocalStorage();
-      App.getElementsById();
-      App.addEventListeners();
       document.getElementById('current-date').innerHTML = util.getDate();
+      this.loadFromLocalStorage();
+      this.drawTasks();
+      this.initControlButtons();
+      this.addEventListeners();
     },
-    getElementsById: function () {
-      outputArea = document.getElementById('output-area');
-      whatToDo = document.getElementById('what-to-do');
-      addToDo = document.getElementById('add-to-do');
-      hideIfDone = document.getElementById('hide-if-done');
-      showDeleted = document.getElementById('show-deleted');
-      hideDeleted = document.getElementById('hide-deleted');
+    initControlButtons() {
+      if (hideToggle) {
+        hideIfDone.classList.add('hide-if-done-button-red');
+      }
+      if (!inBasket) {
+        hideDeleted.classList.add('display-for-buttons-none');
+      } else {
+        whatToDo.classList.add('display-for-buttons-none');
+        addToDo.classList.add('display-for-buttons-none');
+        hideIfDone.classList.add('display-for-buttons-none');
+        showDeleted.classList.add('display-for-buttons-none');
+        hideDeleted.classList.add('display-for-buttons-inline');
+      }
+    },
+    getClasses: function (item) {
+      let classes = '';
+      if (item.done) {
+        classes += " done";
+      }
+      if (item.deleted) {
+        classes += " deleted";
+      }
+      if (item.hide) {
+        classes += " hide-task";
+      }
+      return classes;
     },
     addEventListeners: function () {
-      addToDo.addEventListener('click', function () {
-        if (whatToDo.value === '') {
-          whatToDo.value = "&nbsp;";
-        }
-        outputArea.innerHTML += App.getCurrentTask(whatToDo.value, true);
-        whatToDo.value = ''; // обнуляем введеное в поле
-        App.refreshLocalStorage();
-      });
-      hideIfDone.addEventListener('click', function () {
-        this.classList.toggle('hide-if-done-button-red');
-        var allDoneTasks = document.querySelectorAll('.done'); // получаем все элементы с классом .done
-        if (hideToggle) { // если выбрано 'скрывать выполенные задачи'
-          for (var i = 0; i < allDoneTasks.length; i++) {
-            allDoneTasks[i].classList.remove('hide-task'); // скрываем все элементы с классом .done
-          }
-          hideToggle = false; // меняем флаг
-          localStorage.setItem('hideToggle', false); // меняем флаг в Local Storage
-        } else { // если выбрано показывать выполенные задачи'
-          for (var j = 0; j < allDoneTasks.length; j++) {
-            allDoneTasks[j].classList.add('hide-task'); // показываем все элементы с классом .done
-          }
-          hideToggle = true; // меняем флаг
-          localStorage.setItem('hideToggle', true); // меняем флаг в Local Storage
-        }
-        App.refreshLocalStorage();
-      });
-      showDeleted.addEventListener('click', function () {
-        App.toggleDisplayForButtons(); // влючаем/выключаем нужные/ненужные элементы управления
-        var allOuputs = document.querySelectorAll('.output'); // собираем все задачи
-        for (var i = 0; i < allOuputs.length; i++) {
-          allOuputs[i].classList.add('hide-task'); // скрываем все задачи
-        }
-        var allDeleted = document.querySelectorAll('.deleted'); // собираем все удаленные задачи
-        for (var j = 0; j < allDeleted.length; j++) {
-          allDeleted[j].classList.remove('hide-task'); // и показываем их
-        }
-        App.refreshLocalStorage();
-      });
-      hideDeleted.addEventListener('click', function () {
-        App.toggleDisplayForButtons(); // влючаем/выключаем нужные/ненужные элементы управления
-        var allOuputs = document.querySelectorAll('.output'); // собираем все задачи
-        for (var i = 0; i < allOuputs.length; i++) {
-          allOuputs[i].classList.remove('hide-task'); // и показываем их
-        }
-        var allDeleted = document.querySelectorAll('.deleted'); // собираем все удаленные задачи
-        for (var j = 0; j < allDeleted.length; j++) {
-          allDeleted[j].classList.add('hide-task'); // и скрываем их
-        }
-        if (hideToggle) { // если выбрано 'скрывать выполненные задачи
-          var allDone = document.querySelectorAll('.done'); // собираем все выполненные задачи
-          for (var k = 0; k < allDone.length; k++) {
-            allDone[k].classList.add('hide-task'); // и скрываем их
-          }
-        }
-        App.refreshLocalStorage(); // обновляем информацию в Local Storage
-      }); // что происходит при нажати ина кнопку 'выйти из коризны' (стрелка)
+      addToDo.addEventListener('click', app.addTask);
+      hideIfDone.addEventListener('click', app.hideIfDone);
+      showDeleted.addEventListener('click', app.showDeletedTasks);
+      hideDeleted.addEventListener('click', app.hideDeletedTasks);
       outputArea.addEventListener('click', function (e) {
-        if (e.target.classList.contains('out-span')) {
-          let span = e.target;
-          let input = e.target.previousSibling;
-          input.classList.remove('hide');
-          span.classList.add('hide');
-          input.focus();
-          input.selectionStart = input.value.length;
-          input.onblur = function () {
-            input.classList.add('hide');
-            span.classList.remove('hide');
-            if (input.value === '') {
-              input.value = '&nbsp;';
-            }
-            util.closeset(span, 'output').innerHTML = App.getCurrentTask(input.value);
-            App.refreshLocalStorage();
-          };
+        const target = e.target;
+        if (target.classList.contains('button-done')) {
+          app.toggleDone(target);
         }
-        if (e.target.classList.contains('button-done')) {
-          const closestOuput = util.closeset(e.target, 'output');
-          closestOuput.classList.toggle('done');
-          if (hideToggle) {
-            closestOuput.classList.add('hide-task');
-          }
-          App.refreshLocalStorage();
+        if (target.classList.contains('out-span')) {
+          app.changeTask(target);
         }
-        if (e.target.classList.contains('button-delete')) {
-          util.closeset(e.target, 'output').classList.add('deleted', 'hide-task');
-          App.refreshLocalStorage();
+        if (target.classList.contains('button-delete')) {
+          app.deleteTask(target);
         }
-        if (e.target.classList.contains('button-return')) {
-          const buttonReturnParent = util.closeset(e.target, 'output'); // сохраняем близжайшего родителя с классом '.ouput' переданного в функцию элемента
-          buttonReturnParent.classList.remove('deleted'); // удаляем у него класс deleted
-          buttonReturnParent.classList.add('hide-task'); // и скрываем
-          App.refreshLocalStorage(); // обновляем информацию в Local Storage
+        if (target.classList.contains('button-return')) {
+          app.returnTaskFromBasket(target);
         }
-        if (e.target.classList.contains('button-finally-delete')) {
-          var buttonFinallyDeleteParent = util.closeset(e.target, 'output'); // сохраняем близжайшего родителя с классом '.ouput' переданного в функцию элемента
-          if (confirm('Вы правда хотите окончательно удалить дело?')) { // спрашиваем у пользователя, правда ли он хочет окончательно удалить задачу
-            buttonFinallyDeleteParent.parentNode.removeChild(buttonFinallyDeleteParent); // если хочет, то удаляем
-          }
-          App.refreshLocalStorage(); // обновляем информацию в Local Storage
-        } // что происходит при нажатии на кнопку 'окончательно удалить' (крестик) самой задачи (находится в .ouput), на вход принимает саму кнопку
+        if (target.classList.contains('button-finally-delete')) {
+          app.finallyDeleteTask(target);
+        }
       });
+    },
+    drawTasks: function () {
+      let outputAreaHtml = '';
+      taskArray.forEach(function (item) {
+        outputAreaHtml += `<li class="clearfix output${app.getClasses(item)}" id=${item.id}>
+                             <label class="out-label">
+                               <input type="text" class="out-input hide" value="${item.description}">
+                               <span class="out-span">${item.description}</span>
+                              </label>
+                              <div class="button-done">&#10004;</div><div class="button-delete">&#10006;</div>
+                              <div class="button-finally-delete">&#10006;</div><div class="button-return">&#8634;</div>
+                           </li>`
+      });
+      outputArea.innerHTML = outputAreaHtml;
+    },
+    saveInLocalStorage: function () {
+      localStorage.setItem('tasks', JSON.stringify(taskArray));
+    },
+    loadFromLocalStorage: function () {
+      if (localStorage.getItem('tasks')) {
+        taskArray = JSON.parse(localStorage.getItem('tasks'));
+      }
+      hideToggle = localStorage.getItem('hideToggle'); // пытаемся считать значение для hide Toggle из Local Storage
+      if (!hideToggle) { // если в local storage нет hideToggle (страница открыта впервые), то
+        hideToggle = false; // по умолчанию зададим ему false (значит, на него ещё не нажимали)
+      } else { // если в local storage есть такой элемент, то
+        hideToggle = hideToggle === 'true' ? true : false;
+      }
+      inBasket = localStorage.getItem('inBasket');
+      if (!inBasket) { // если в local storage нет hideToggle (страница открыта впервые), то
+        inBasket = false; // по умолчанию зададим ему false (значит, на него ещё не нажимали)
+      } else { // если в local storage есть такой элемент, то
+        inBasket = inBasket === 'true' ? true : false;
+      }
+    },
+    indexFromEl: function (el) {
+      let id = util.closest(el, 'output').id;
+      let i = taskArray.length;
+      while (i--) {
+        if (taskArray[i].id === id) {
+          return i;
+        }
+      }
+    },
+    addTask: function () {
+      if (whatToDo.value === '') {
+        whatToDo.value = '&nbsp;';
+      }
+      taskArray.push({
+        description: whatToDo.value,
+        done: false,
+        deleted: false,
+        hide: false,
+        id: util.uuid()
+      });
+      whatToDo.value = ''; // обнуляем введеное в поле
+      app.drawTasks();
+      app.saveInLocalStorage();
+    },
+    deleteTask: function (target) {
+      let i = app.indexFromEl(target);
+      taskArray[i].hide = true;
+      taskArray[i].deleted = true;
+      taskArray[i].done = false;
+      app.drawTasks();
+      app.saveInLocalStorage();
+    },
+    finallyDeleteTask: function (target) {
+      if (confirm('Вы правда хотите окончательно удалить дело?')) { // спрашиваем у пользователя, правда ли он хочет окончательно удалить задачу
+        let i = app.indexFromEl(target);
+        taskArray.splice(i, 1);
+        app.drawTasks();
+        app.saveInLocalStorage();
+      }
+    },
+    returnTaskFromBasket: function (target) {
+      const i = app.indexFromEl(target);
+      taskArray[i].deleted = false;
+      taskArray[i].hide = true;
+      app.drawTasks();
+      app.saveInLocalStorage();
+    },
+    changeTask: function (target) {
+      let span = target;
+      let input = util.closest(target, 'output').getElementsByClassName('out-input')[0];
+      input.classList.remove('hide');
+      span.classList.add('hide');
+      input.focus();
+      input.selectionStart = input.value.length;
+      input.onblur = function () {
+        input.classList.add('hide');
+        span.classList.remove('hide');
+        if (input.value === '') {
+          input.value = '&nbsp;';
+        }
+        let output = util.closest(target, 'output');
+        let i = app.indexFromEl(output);
+        taskArray[i].description = input.value;
+        app.drawTasks();
+        app.saveInLocalStorage();
+      };
+    },
+    hideIfDone: function () {
+      this.classList.toggle('hide-if-done-button-red');
+      hideToggle = !hideToggle;
+      taskArray.forEach(function (item) {
+        if (item.done) {
+          item.hide = !item.hide;
+        }
+      });
+      localStorage.setItem('hideToggle', hideToggle); // меняем флаг в Local Storage
+      app.drawTasks();
+      app.saveInLocalStorage();
+    },
+    toggleDone: function (target) {
+      const id = app.indexFromEl(target);
+      taskArray[id].done = !taskArray[id].done;
+      if (taskArray[id].done && hideToggle) {
+        taskArray[id].hide = true;
+      }
+      app.drawTasks();
+      app.saveInLocalStorage();
     },
     toggleDisplayForButtons: function () {
       whatToDo.classList.toggle('display-for-buttons-none');
@@ -148,36 +230,40 @@
       hideIfDone.classList.toggle('display-for-buttons-none');
       showDeleted.classList.toggle('display-for-buttons-none');
       hideDeleted.classList.toggle('display-for-buttons-inline');
-    }, // функция, которая скрывает/показывает лишние/нужные элементы при переходе/выходе из корзины
-    getCurrentTask: function (task, full) {
-      const newTask = `<label class="out-label"><input type="text" class="out-input hide" value="${task}"><span class="out-span">${task}</span></label>
-               <div class="button-done">&#10004;</div><div class="button-delete">&#10006;</div>
-               <div class="button-finally-delete">&#10006;</div><div class="button-return">&#8634;</div>`;
-      if (full) {
-        return `<div class="clearfix output">${newTask}</div>`;
-      }
-      return newTask;
-    },
-    loadLocalStorage: function () {
-      const localStorageActiveArea = localStorage.getItem('activeArea'); // пытаемся считать значение для Active Area из Local Storage
-      if (localStorageActiveArea) { // если в Local Storage есть элемент, доступный по ключу 'activeArea', то
-        activeArea.innerHTML = localStorageActiveArea; // перезаписываем Active Area из Local Storage
-      }
-      hideToggle = localStorage.getItem('hideToggle'); // пытаемся считать значение для hide Toggle из Local Storage
-      if (!hideToggle) { // если в local storage нет hideToggle (страница открыта впервые), то
-        hideToggle = false; // по умолчанию зададим ему false (значит, на него ещё не нажимали)
-      } else { // если в local storage есть такой элемент, то
-        if (hideToggle === 'true') { // если считанная из local storage строка 'true'
-          hideToggle = true; // переведем её в boolean
+    }, // функция, которая скрывает/показывает лишние/нужные элементы при переходе в/выходе из корзины
+    showDeletedTasks: function () {
+      app.toggleDisplayForButtons(); // влючаем/выключаем нужные/ненужные элементы управления
+      taskArray.forEach(function (item) {
+        item.hide = true;
+        if (item.deleted) {
+          item.hide = false;
         }
-        if (hideToggle === 'false') { // если считанная из local storage строка 'false'
-          hideToggle = false; // переведём её в boolean
-        }
-      }
+      });
+      localStorage.setItem('inBasket', true);
+      app.drawTasks();
+      app.saveInLocalStorage();
     },
-    refreshLocalStorage: function () {
-      localStorage.setItem('activeArea', activeArea.innerHTML); // обновляем информацию в Local Storage
+    hideDeletedTasks: function () {
+      app.toggleDisplayForButtons(); // влючаем/выключаем нужные/ненужные элементы управления
+      taskArray.forEach(function (item) {
+        item.hide = false;
+        if (item.deleted) {
+          item.hide = true;
+        }
+        if (hideToggle && item.done) {
+          item.hide = true;
+        }
+      });
+      localStorage.setItem('inBasket', false);
+      app.drawTasks();
+      app.saveInLocalStorage();
     }
   };
-  App.init();
+  const tasks = {
+    
+  }
+  const contolButtons = {
+    
+  }
+  app.init();
 }());

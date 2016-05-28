@@ -96,6 +96,9 @@ body {
   .hide-deleted:hover {
     cursor: pointer; }
 
+#hide-deleted {
+  display: none; }
+
 .add-to-do svg {
   transition: all 0.3s ease; }
 
@@ -119,7 +122,10 @@ body {
     fill: green; }
 
 .output-area {
-  padding-top: 20px; }
+  margin-top: 20px;
+  padding: 0; }
+  .output-area li {
+    display: block; }
 
 .output {
   padding: 10px;
@@ -208,12 +214,12 @@ body {
     background: red; }
 
 .display-for-buttons-none {
-  display: none; }
+  display: none !important; }
 
 .display-for-buttons-inline {
-  display: inline-block; }
+  display: inline-block !important; }
 
-ul {
+.icon-buttons {
   padding: 0;
   text-align: justify;
   /* Обнуляем для родителя*/
@@ -225,7 +231,7 @@ ul {
   zoom: 1;
   /* Включаем в работу последнюю строку*/
   text-align-last: justify; }
-  ul li {
+  .icon-buttons li {
     display: inline-block;
     text-align: left;
     /* Востанавливаем у потомков, кроме последнего*/
@@ -234,7 +240,7 @@ ul {
     /* Без него в Opera будет отступ под элементами */
     vertical-align: top;
     /* эмуляция inline-block для IE6-7*/ }
-  ul:after {
+  .icon-buttons:after {
     width: 100%;
     height: 0px;
     visibility: hidden;
