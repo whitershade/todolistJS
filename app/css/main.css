@@ -283,10 +283,7 @@ body {
     animation: none !important; }
   .output input,
   .output label {
-    width: 80%; } }
-
-/* Extra Small Devices, Phones */
-@media only screen and (max-width: 480px) {
+    width: 80%; }
   .main-header .left-side {
     margin-right: -15px;
     background: #000;
@@ -301,7 +298,10 @@ body {
       line-height: 100px; }
   .main-header .date-text {
     font-size: 1.25em;
-    margin-bottom: 20px; }
+    margin-bottom: 20px; } }
+
+/* Extra Small Devices, Phones */
+@media only screen and (max-width: 480px) {
   .input-area input[name="what-to-do"] {
     width: 100%; }
   .input-area .add-to-do,
