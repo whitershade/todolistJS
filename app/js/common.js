@@ -1,5 +1,6 @@
 /* eslint max-len: ["error", 200] */
 /* eslint-env browser */
+/* eslint no-unused-expressions: ["error", { "allowShortCircuit": true, "allowTernary": true }] */
 
 (function () {
   'use strict';
@@ -20,8 +21,8 @@
     }, // функция, которая возвращает текущую дату в формате 0.0.0000
     closest: function (el, cl) {
       let elem = el; // сохраняем переданный в функцию элемент
-      while (elem.className.replace(/[\n\t]/g, ' ').indexOf(cl) === -1) { // пока у элеменат нет искомого имени класса ищем родителя 
-        if (elem.tagName.toLowerCase() == 'html') {
+      while (elem.className.replace(/[\n\t]/g, ' ').indexOf(cl) === -1) { // пока у элеменат нет искомого имени класса ищем родителя
+        if (elem.tagName.toLowerCase() === 'html') {
           return false;
         } // если дошли до конца документа, и не нашли подходящего родителя, то возращаем false
         elem = elem.parentNode;
@@ -29,8 +30,8 @@
       return elem; // возвращаем найденный элемент
     }, // функция, которая находит близжайшего родителя элемента с указанным классом
     uuid: function () {
-      /*jshint bitwise:false */
-      var i, random;
+      let i;
+      let random;
       var uuid = '';
       for (i = 0; i < 32; i++) {
         random = Math.random() * 16 | 0;
@@ -52,9 +53,7 @@
       this.addEventListeners();
     },
     initControlButtons() {
-      if (hideToggle) {
-        hideIfDone.classList.add('hide-if-done-button-red');
-      }
+      hideToggle && hideIfDone.classList.add('hide-if-done-button-red');
       if (!inBasket) {
         hideDeleted.classList.add('display-for-buttons-none');
       } else {
@@ -67,15 +66,9 @@
     },
     getClasses: function (item) {
       let classes = '';
-      if (item.done) {
-        classes += " done";
-      }
-      if (item.deleted) {
-        classes += " deleted";
-      }
-      if (item.hide) {
-        classes += " hide-task";
-      }
+      item.done && (classes += ' done');
+      item.deleted && (classes += ' deleted');
+      item.hide && (classes += ' hide-task');
       return classes;
     },
     addEventListeners: function () {
@@ -85,21 +78,11 @@
       hideDeleted.addEventListener('click', app.hideDeletedTasks);
       outputArea.addEventListener('click', function (e) {
         const target = e.target;
-        if (target.classList.contains('button-done')) {
-          app.toggleDone(target);
-        }
-        if (target.classList.contains('out-span')) {
-          app.changeTask(target);
-        }
-        if (target.classList.contains('button-delete')) {
-          app.deleteTask(target);
-        }
-        if (target.classList.contains('button-return')) {
-          app.returnTaskFromBasket(target);
-        }
-        if (target.classList.contains('button-finally-delete')) {
-          app.finallyDeleteTask(target);
-        }
+        target.classList.contains('button-done') && app.toggleDone(target);
+        target.classList.contains('out-span') && app.changeTask(target);
+        target.classList.contains('button-delete') && app.deleteTask(target);
+        target.classList.contains('button-return') && app.returnTaskFromBasket(target);
+        target.classList.contains('button-finally-delete') && app.finallyDeleteTask(target);
       });
     },
     drawTasks: function () {
@@ -112,7 +95,7 @@
                               </label>
                               <div class="button-done">&#10004;</div><div class="button-delete">&#10006;</div>
                               <div class="button-finally-delete">&#10006;</div><div class="button-return">&#8634;</div>
-                           </li>`
+                           </li>`;
       });
       outputArea.innerHTML = outputAreaHtml;
     },
@@ -137,7 +120,7 @@
       }
     },
     indexFromEl: function (el) {
-      let id = util.closest(el, 'output').id;
+      const id = util.closest(el, 'output').id;
       let i = taskArray.length;
       while (i--) {
         if (taskArray[i].id === id) {
@@ -161,7 +144,7 @@
       app.saveInLocalStorage();
     },
     deleteTask: function (target) {
-      let i = app.indexFromEl(target);
+      const i = app.indexFromEl(target);
       taskArray[i].hide = true;
       taskArray[i].deleted = true;
       taskArray[i].done = false;
@@ -170,7 +153,7 @@
     },
     finallyDeleteTask: function (target) {
       if (confirm('Вы правда хотите окончательно удалить дело?')) { // спрашиваем у пользователя, правда ли он хочет окончательно удалить задачу
-        let i = app.indexFromEl(target);
+        const i = app.indexFromEl(target);
         taskArray.splice(i, 1);
         app.drawTasks();
         app.saveInLocalStorage();
@@ -184,8 +167,8 @@
       app.saveInLocalStorage();
     },
     changeTask: function (target) {
-      let span = target;
-      let input = util.closest(target, 'output').getElementsByClassName('out-input')[0];
+      const span = target;
+      const input = util.closest(target, 'output').getElementsByClassName('out-input')[0];
       input.classList.remove('hide');
       span.classList.add('hide');
       input.focus();
@@ -193,11 +176,9 @@
       input.onblur = function () {
         input.classList.add('hide');
         span.classList.remove('hide');
-        if (input.value === '') {
-          input.value = '&nbsp;';
-        }
-        let output = util.closest(target, 'output');
-        let i = app.indexFromEl(output);
+        input.value === '' && (input.value = '&nbsp;');
+        const output = util.closest(target, 'output');
+        const i = app.indexFromEl(output);
         taskArray[i].description = input.value;
         app.drawTasks();
         app.saveInLocalStorage();
@@ -259,11 +240,11 @@
       app.saveInLocalStorage();
     }
   };
-  const tasks = {
-    
-  }
-  const contolButtons = {
-    
-  }
+  //  const tasks = {
+  //    
+  //  }
+  //  const contolButtons = {
+  //    
+  //  }
   app.init();
 }());

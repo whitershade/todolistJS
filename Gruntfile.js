@@ -126,7 +126,7 @@
       }
     });
     // Указываем, какие задачи выполняются, когда мы вводим «grunt» в терминале
-    grunt.registerTask('default', ['clean', 'jshint', 'useminPrepare',
+    grunt.registerTask('default', ['clean', 'useminPrepare',
     'concat', 'purifycss', 'cssmin', 'uglify', 'copy', 'usemin', 'autoprefixer', 'imagemin', 'revizor']);
   };
 }());

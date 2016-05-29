@@ -86,10 +86,6 @@ a:active,a:hover {
  * Address style set to `bolder` in Firefox 4+, Safari, and Chrome.
  */
 
-b {
-  font-weight: bold;
-}
-
 /**
  * Address styling not present in Safari and Chrome.
  */
@@ -344,10 +340,6 @@ a:active,a:hover {
   outline: 0;
 }
 
-b {
-  font-weight: 700;
-}
-
 h1 {
   margin: .67em 0;
   font-size: 2em;
@@ -453,6 +445,10 @@ input[type=search]::-webkit-search-cancel-button,input[type=search]::-webkit-sea
 
   h2,  h3 {
     page-break-after: avoid;
+  }
+
+  .label {
+    border: 1px solid #000;
   }
 }
 
@@ -668,6 +664,58 @@ ul ul {
   width: 8.33333333%;
 }
 
+.col-xs-push-12 {
+  left: 100%;
+}
+
+.col-xs-push-11 {
+  left: 91.66666667%;
+}
+
+.col-xs-push-10 {
+  left: 83.33333333%;
+}
+
+.col-xs-push-9 {
+  left: 75%;
+}
+
+.col-xs-push-8 {
+  left: 66.66666667%;
+}
+
+.col-xs-push-7 {
+  left: 58.33333333%;
+}
+
+.col-xs-push-6 {
+  left: 50%;
+}
+
+.col-xs-push-5 {
+  left: 41.66666667%;
+}
+
+.col-xs-push-4 {
+  left: 33.33333333%;
+}
+
+.col-xs-push-3 {
+  left: 25%;
+}
+
+.col-xs-push-2 {
+  left: 16.66666667%;
+}
+
+.col-xs-push-1 {
+  left: 8.33333333%;
+}
+
+.col-xs-push-0 {
+  left: auto;
+}
+
 @media (min-width:768px) {
   .col-sm-1,  .col-sm-10,  .col-sm-11,  .col-sm-12,  .col-sm-2,  .col-sm-3,  .col-sm-4,  .col-sm-5,  .col-sm-6,  .col-sm-7,  .col-sm-8,  .col-sm-9 {
     float: left;
@@ -719,6 +767,58 @@ ul ul {
 
   .col-sm-1 {
     width: 8.33333333%;
+  }
+
+  .col-sm-push-12 {
+    left: 100%;
+  }
+
+  .col-sm-push-11 {
+    left: 91.66666667%;
+  }
+
+  .col-sm-push-10 {
+    left: 83.33333333%;
+  }
+
+  .col-sm-push-9 {
+    left: 75%;
+  }
+
+  .col-sm-push-8 {
+    left: 66.66666667%;
+  }
+
+  .col-sm-push-7 {
+    left: 58.33333333%;
+  }
+
+  .col-sm-push-6 {
+    left: 50%;
+  }
+
+  .col-sm-push-5 {
+    left: 41.66666667%;
+  }
+
+  .col-sm-push-4 {
+    left: 33.33333333%;
+  }
+
+  .col-sm-push-3 {
+    left: 25%;
+  }
+
+  .col-sm-push-2 {
+    left: 16.66666667%;
+  }
+
+  .col-sm-push-1 {
+    left: 8.33333333%;
+  }
+
+  .col-sm-push-0 {
+    left: auto;
   }
 }
 
@@ -774,6 +874,58 @@ ul ul {
   .col-md-1 {
     width: 8.33333333%;
   }
+
+  .col-md-push-12 {
+    left: 100%;
+  }
+
+  .col-md-push-11 {
+    left: 91.66666667%;
+  }
+
+  .col-md-push-10 {
+    left: 83.33333333%;
+  }
+
+  .col-md-push-9 {
+    left: 75%;
+  }
+
+  .col-md-push-8 {
+    left: 66.66666667%;
+  }
+
+  .col-md-push-7 {
+    left: 58.33333333%;
+  }
+
+  .col-md-push-6 {
+    left: 50%;
+  }
+
+  .col-md-push-5 {
+    left: 41.66666667%;
+  }
+
+  .col-md-push-4 {
+    left: 33.33333333%;
+  }
+
+  .col-md-push-3 {
+    left: 25%;
+  }
+
+  .col-md-push-2 {
+    left: 16.66666667%;
+  }
+
+  .col-md-push-1 {
+    left: 8.33333333%;
+  }
+
+  .col-md-push-0 {
+    left: auto;
+  }
 }
 
 @media (min-width:1200px) {
@@ -828,6 +980,65 @@ ul ul {
   .col-lg-1 {
     width: 8.33333333%;
   }
+
+  .col-lg-push-12 {
+    left: 100%;
+  }
+
+  .col-lg-push-11 {
+    left: 91.66666667%;
+  }
+
+  .col-lg-push-10 {
+    left: 83.33333333%;
+  }
+
+  .col-lg-push-9 {
+    left: 75%;
+  }
+
+  .col-lg-push-8 {
+    left: 66.66666667%;
+  }
+
+  .col-lg-push-7 {
+    left: 58.33333333%;
+  }
+
+  .col-lg-push-6 {
+    left: 50%;
+  }
+
+  .col-lg-push-5 {
+    left: 41.66666667%;
+  }
+
+  .col-lg-push-4 {
+    left: 33.33333333%;
+  }
+
+  .col-lg-push-3 {
+    left: 25%;
+  }
+
+  .col-lg-push-2 {
+    left: 16.66666667%;
+  }
+
+  .col-lg-push-1 {
+    left: 8.33333333%;
+  }
+
+  .col-lg-push-0 {
+    left: auto;
+  }
+}
+
+label {
+  display: inline-block;
+  max-width: 100%;
+  margin-bottom: 5px;
+  font-weight: 700;
 }
 
 input[type=search] {
@@ -897,6 +1108,29 @@ input[type=checkbox][disabled],input[type=radio][disabled] {
   font-size: 18px;
   line-height: 1.3333333;
   border-radius: 6px;
+}
+
+.label {
+  display: inline;
+  padding: .2em .6em .3em;
+  font-size: 75%;
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: .25em;
+}
+
+a.label:focus,a.label:hover {
+  color: #fff;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.label:empty {
+  display: none;
 }
 
 @-webkit-keyframes progress-bar-stripes {
@@ -1037,6 +1271,14 @@ body {
   color: black;
 }
 
+.done span {
+  text-decoration: line-through;
+}
+
+.done input {
+  background: #64e464;
+}
+
 .input-area {
   padding-bottom: 15px;
   border-bottom: 2px solid green;
@@ -1060,6 +1302,10 @@ body {
 
 .add-to-do:hover,.hide-if-done:hover,.show-deleted:hover,.hide-deleted:hover {
   cursor: pointer;
+}
+
+#hide-deleted {
+  display: none;
 }
 
 .add-to-do svg {
@@ -1093,7 +1339,12 @@ body {
 }
 
 .output-area {
-  padding-top: 20px;
+  margin-top: 20px;
+  padding: 0;
+}
+
+.output-area li {
+  display: block;
 }
 
 .output {
@@ -1103,12 +1354,27 @@ body {
   transition: all 0.5s ease;
 }
 
-.output p {
-  float: left;
-  margin: 0;
-  padding: 0;
-  display: inline-block;
-  margin-right: 10px;
+.output label {
+  margin-top: 10px;
+}
+
+.output input {
+  padding: 5px;
+  transition: background 0.5s ease;
+}
+
+.output input.hide {
+  display: none;
+}
+
+.output span {
+  padding: 5px;
+  display: block;
+  word-wrap: break-word;
+}
+
+.output span.hide {
+  display: none;
 }
 
 .output .button-delete,.output .button-done,.output .button-finally-delete,.output .button-return {
@@ -1155,7 +1421,7 @@ body {
   border: none;
 }
 
-.hide-task .button-delete,.hide-task .button-done,.hide-task .button-finally-delete,.hide-task .button-return {
+.hide-task input,.hide-task .button-delete,.hide-task .button-done,.hide-task .button-finally-delete,.hide-task .button-return {
   margin: 0;
   height: 0;
   padding: 0;
@@ -1183,15 +1449,19 @@ body {
   display: inline-block;
 }
 
+.deleted input {
+  background: red;
+}
+
 .display-for-buttons-none {
-  display: none;
+  display: none !important;
 }
 
 .display-for-buttons-inline {
-  display: inline-block;
+  display: inline-block !important;
 }
 
-ul {
+.icon-buttons {
   padding: 0;
   text-align: justify;
   /* Обнуляем для родителя*/
@@ -1205,7 +1475,7 @@ ul {
   text-align-last: justify;
 }
 
-ul li {
+.icon-buttons li {
   display: inline-block;
   text-align: left;
   /* Востанавливаем у потомков, кроме последнего*/
@@ -1216,13 +1486,23 @@ ul li {
   /* эмуляция inline-block для IE6-7*/
 }
 
-ul:after {
+.icon-buttons:after {
   width: 100%;
   height: 0px;
   visibility: hidden;
   overflow: hidden;
   content: '';
   display: inline-block;
+}
+
+.out-label {
+  position: relative;
+  width: 90%;
+}
+
+.output input {
+  border: none;
+  width: 100%;
 }
 
 /*==========  Desktop First Method  ==========*/
@@ -1235,6 +1515,10 @@ ul:after {
 
 @media only screen and (max-width: 768px) {
   /*Disable Animation on Mobile Devices*/
+
+  .output input,  .output label {
+    width: 80%;
+  }
 }
 
 /* Extra Small Devices, Phones */
@@ -1276,6 +1560,14 @@ ul:after {
   .input-area .add-to-do svg,  .input-area .hide-if-done svg,  .input-area .show-deleted svg,  .input-area .hide-deleted svg {
     width: 35px;
     height: 35px;
+  }
+
+  .output label {
+    width: 70%;
+  }
+
+  .output input {
+    width: 100%;
   }
 }
 
