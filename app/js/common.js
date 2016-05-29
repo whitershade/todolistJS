@@ -13,6 +13,7 @@
 
   let hideToggle;
   let inBasket;
+  let taskArray = [];
 
   const util = {
     getDate: function () {
@@ -43,12 +44,11 @@
       return uuid;
     }
   };
-  let taskArray = [];
   const app = {
     init: function () {
       document.getElementById('current-date').innerHTML = util.getDate();
       this.loadFromLocalStorage();
-      this.drawTasks();
+      tasks.drawTasks();
       this.initControlButtons();
       this.addEventListeners();
     },
@@ -78,26 +78,12 @@
       hideDeleted.addEventListener('click', app.hideDeletedTasks);
       outputArea.addEventListener('click', function (e) {
         const target = e.target;
-        target.classList.contains('button-done') && app.toggleDone(target);
-        target.classList.contains('out-span') && app.changeTask(target);
-        target.classList.contains('button-delete') && app.deleteTask(target);
-        target.classList.contains('button-return') && app.returnTaskFromBasket(target);
-        target.classList.contains('button-finally-delete') && app.finallyDeleteTask(target);
+        target.classList.contains('button-done') && tasks.toggleDone(target);
+        target.classList.contains('out-span') && tasks.changeTask(target);
+        target.classList.contains('button-delete') && tasks.deleteTask(target);
+        target.classList.contains('button-return') && tasks.returnTaskFromBasket(target);
+        target.classList.contains('button-finally-delete') && tasks.finallyDeleteTask(target);
       });
-    },
-    drawTasks: function () {
-      let outputAreaHtml = '';
-      taskArray.forEach(function (item) {
-        outputAreaHtml += `<li class="clearfix output${app.getClasses(item)}" id=${item.id}>
-                             <label class="out-label">
-                               <input type="text" class="out-input hide" value="${item.description}">
-                               <span class="out-span">${item.description}</span>
-                              </label>
-                              <div class="button-done">&#10004;</div><div class="button-delete">&#10006;</div>
-                              <div class="button-finally-delete">&#10006;</div><div class="button-return">&#8634;</div>
-                           </li>`;
-      });
-      outputArea.innerHTML = outputAreaHtml;
     },
     saveInLocalStorage: function () {
       localStorage.setItem('tasks', JSON.stringify(taskArray));
@@ -140,49 +126,8 @@
         id: util.uuid()
       });
       whatToDo.value = ''; // обнуляем введеное в поле
-      app.drawTasks();
+      tasks.drawTasks();
       app.saveInLocalStorage();
-    },
-    deleteTask: function (target) {
-      const i = app.indexFromEl(target);
-      taskArray[i].hide = true;
-      taskArray[i].deleted = true;
-      taskArray[i].done = false;
-      app.drawTasks();
-      app.saveInLocalStorage();
-    },
-    finallyDeleteTask: function (target) {
-      if (confirm('Вы правда хотите окончательно удалить дело?')) { // спрашиваем у пользователя, правда ли он хочет окончательно удалить задачу
-        const i = app.indexFromEl(target);
-        taskArray.splice(i, 1);
-        app.drawTasks();
-        app.saveInLocalStorage();
-      }
-    },
-    returnTaskFromBasket: function (target) {
-      const i = app.indexFromEl(target);
-      taskArray[i].deleted = false;
-      taskArray[i].hide = true;
-      app.drawTasks();
-      app.saveInLocalStorage();
-    },
-    changeTask: function (target) {
-      const span = target;
-      const input = util.closest(target, 'output').getElementsByClassName('out-input')[0];
-      input.classList.remove('hide');
-      span.classList.add('hide');
-      input.focus();
-      input.selectionStart = input.value.length;
-      input.onblur = function () {
-        input.classList.add('hide');
-        span.classList.remove('hide');
-        input.value === '' && (input.value = '&nbsp;');
-        const output = util.closest(target, 'output');
-        const i = app.indexFromEl(output);
-        taskArray[i].description = input.value;
-        app.drawTasks();
-        app.saveInLocalStorage();
-      };
     },
     hideIfDone: function () {
       this.classList.toggle('hide-if-done-button-red');
@@ -193,16 +138,7 @@
         }
       });
       localStorage.setItem('hideToggle', hideToggle); // меняем флаг в Local Storage
-      app.drawTasks();
-      app.saveInLocalStorage();
-    },
-    toggleDone: function (target) {
-      const id = app.indexFromEl(target);
-      taskArray[id].done = !taskArray[id].done;
-      if (taskArray[id].done && hideToggle) {
-        taskArray[id].hide = true;
-      }
-      app.drawTasks();
+      tasks.drawTasks();
       app.saveInLocalStorage();
     },
     toggleDisplayForButtons: function () {
@@ -221,7 +157,7 @@
         }
       });
       localStorage.setItem('inBasket', true);
-      app.drawTasks();
+      tasks.drawTasks();
       app.saveInLocalStorage();
     },
     hideDeletedTasks: function () {
@@ -236,15 +172,75 @@
         }
       });
       localStorage.setItem('inBasket', false);
-      app.drawTasks();
+      tasks.drawTasks();
       app.saveInLocalStorage();
     }
   };
-  //  const tasks = {
-  //    
-  //  }
-  //  const contolButtons = {
-  //    
-  //  }
+  const tasks = {
+    drawTasks: function () {
+      let outputAreaHtml = '';
+      taskArray.forEach(function (item) {
+        outputAreaHtml += `<li class="clearfix output${app.getClasses(item)}" id=${item.id}>
+                             <label class="out-label">
+                               <input type="text" class="out-input hide" value="${item.description}">
+                               <span class="out-span">${item.description}</span>
+                              </label>
+                              <div class="button-done">&#10004;</div><div class="button-delete">&#10006;</div>
+                              <div class="button-finally-delete">&#10006;</div><div class="button-return">&#8634;</div>
+                           </li>`;
+      });
+      outputArea.innerHTML = outputAreaHtml;
+    },
+    toggleDone: function (target) {
+      const id = app.indexFromEl(target);
+      taskArray[id].done = !taskArray[id].done;
+      if (taskArray[id].done && hideToggle) {
+        taskArray[id].hide = true;
+      }
+      this.drawTasks();
+      app.saveInLocalStorage();
+    },
+    changeTask: function (target) {
+      const span = target;
+      const input = util.closest(target, 'output').getElementsByClassName('out-input')[0];
+      input.classList.remove('hide');
+      span.classList.add('hide');
+      input.focus();
+      input.selectionStart = input.value.length;
+      input.onblur = function () {
+        input.classList.add('hide');
+        span.classList.remove('hide');
+        input.value === '' && (input.value = '&nbsp;');
+        const output = util.closest(target, 'output');
+        const i = app.indexFromEl(output);
+        taskArray[i].description = input.value;
+        tasks.drawTasks();
+        app.saveInLocalStorage();
+      };
+    },
+    deleteTask: function (target) {
+      const i = app.indexFromEl(target);
+      taskArray[i].hide = true;
+      taskArray[i].deleted = true;
+      taskArray[i].done = false;
+      this.drawTasks();
+      app.saveInLocalStorage();
+    },
+    returnTaskFromBasket: function (target) {
+      const i = app.indexFromEl(target);
+      taskArray[i].deleted = false;
+      taskArray[i].hide = true;
+      this.drawTasks();
+      app.saveInLocalStorage();
+    },
+    finallyDeleteTask: function (target) {
+      if (confirm('Вы правда хотите окончательно удалить дело?')) { // спрашиваем у пользователя, правда ли он хочет окончательно удалить задачу
+        const i = app.indexFromEl(target);
+        taskArray.splice(i, 1);
+        this.drawTasks();
+        app.saveInLocalStorage();
+      }
+    }
+  };
   app.init();
 }());
