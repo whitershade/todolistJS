@@ -87,7 +87,7 @@ body {
 
 .add-to-do {
   svg {
-    transition: all .3s ease;
+    transition: fill .3s ease;
   }
   &:hover {
     svg {
@@ -98,7 +98,7 @@ body {
 
 .hide-if-done {
   svg {
-    transition: all .2s ease;
+    transition: fill .2s ease;
     fill: green;
     transform: translateY(1px) scale(1.2);
   }

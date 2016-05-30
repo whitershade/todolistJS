@@ -100,13 +100,13 @@ body {
   display: none; }
 
 .add-to-do svg {
-  transition: all 0.3s ease; }
+  transition: fill 0.3s ease; }
 
 .add-to-do:hover svg {
   fill: green; }
 
 .hide-if-done svg {
-  transition: all 0.2s ease;
+  transition: fill 0.2s ease;
   fill: green;
   transform: translateY(1px) scale(1.2); }
 
