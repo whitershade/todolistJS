@@ -9,7 +9,7 @@
   const addToDo = document.getElementById('add-to-do'); // получаем кнопку добавить новую задачу (плюс)
   const hideIfDone = document.getElementById('hide-if-done'); // получаем кнопку скрыть/показать сделанные задачи (глаз)
   const showDeleted = document.getElementById('show-deleted'); // получаем кнопку показать сделанные задачи (корзина)
-  const hideDeleted = document.getElementById('hide-deleted'); // получаем кнопку выйти из коризны (стрелка)
+  const hideDeleted = document.getElementById('hide-deleted'); // получаем кнопку выйти из корзины (стрелка)
 
   let hideToggle; // переключатель показывать/скрывать сделанные задачи
   let inBasket; // перекючатель в корзине/ не в козине
